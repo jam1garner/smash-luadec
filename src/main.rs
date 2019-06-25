@@ -2,6 +2,7 @@
 #![allow(dead_code)]
 mod bytecode;
 use bytecode::*;
+mod lc;
 
 fn main() {
     println!("{:?}", Instruction {
