@@ -208,29 +208,48 @@ impl Op {
     }
 }
 
+pub fn bytes_to_u32(bytes: &[u8]) -> u32 {
+    unsafe {
+        *(bytes.as_ptr() as *const u32)
+    }
+}
+
 pub fn take_instr(bytes: &[u8]) -> Option<Instruction> {
-    let op = Op::from_u8(bytes[0] >> 2)?;
+    let instr = bytes_to_u32(bytes);
+    let op = Op::from_u8(instr as u8 & 0x3f)?;
     let mut a = Operand::None;
     let mut b = Operand::None;
     let mut c = Operand::None;
     let mode = op.get_mode();
     match mode {
         OpMode::IABC => {
-            a = Operand::Reg(((bytes[0] & 0x3) << 6) + ((bytes[1] & !0x3) >> 2));
-            let b_val = ((bytes[1] & 1) << 7) + (bytes[2] >> 1);
-            b = if bytes[1] & 0x2 == 0 {
-                Operand::Reg(b_val)
-            } else {
-                Operand::Const(b_val)
-            };
-            let c_val = bytes[3];
-            c = if bytes[2] & 1 == 0 {
+            a = Operand::Reg((instr >> 6) as u8);
+            let c_val = (instr >> 14) as u8;
+            c = if instr & 0x400000 == 0 {
                 Operand::Reg(c_val)
             } else {
                 Operand::Const(c_val)
             };
+            let b_val = (instr >> 23) as u8;
+            b = if instr & 0x80000000 == 0 {
+                Operand::Reg(b_val)
+            } else {
+                Operand::Const(b_val)
+            };
         }
-        _ => {}
+        OpMode::IABX => {
+            a = Operand::Reg((instr >> 6) as u8);
+            b = Operand::U18(instr >> 14);
+        }
+        OpMode::IASBX => {
+            a = Operand::Reg((instr >> 6) as u8);
+            // Extend sign bit 18 bit to 32 bit
+            let b_val = ((instr >> 14) & 0x1ffff) + (instr & 0x80000000);
+            b = Operand::S18(b_val as i32);
+        }
+        OpMode::IAX => {
+            a = Operand::U26(instr >> 6);
+        }
     }
     Some(Instruction { op, a, b, c })
 }
