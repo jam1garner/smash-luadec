@@ -8,34 +8,27 @@ pub struct Instruction {
 
 impl Instruction {
     pub fn as_bytes(&self) -> Option<[u8; 4]> {
-        let mut bytes = [0; 4];
-        bytes[0] = (self.op as u8) << 2;
+        let mut instr: u32 = self.op as u32;
         match self.op.get_mode() {
             OpMode::IABC => {
-                let a = self.a.as_u8()?;
-                bytes[0] |= a >> 6;
-                bytes[1] |= a << 2;
-                let b = self.b.as_u8()?;
-                bytes[1] |= self.b.get_const_bit()? << 1;
-                bytes[1] |= b >> 7;
-                bytes[2] |= b << 1;
-                let c = self.c.as_u8()?;
-                bytes[2] |= self.c.get_const_bit()?;
-                bytes[3] = c;
+                let a = self.a.as_u8()? as u32;
+                let b = self.b.as_u9()?;
+                let c = self.c.as_u9()?;
+                instr |= ((((b << 9) | c) << 8) | a) << 6;
             }
-            OpMode::IABX => {
-                let a = self.a.as_u8()?;
-                bytes[0] |= a >> 6;
-                bytes[1] |= a << 2;
-                let b = self.b.get_u18()?;
-                bytes[1] |= (b >> 16) as u8;
-                bytes[2] |= (b >> 8) as u8;
-                bytes[3] |= b as u8;
+            OpMode::IABX | OpMode::IASBX => {
+                let a = self.a.as_u8()? as u32;
+                let b = self.b.as_u18()?;
+                instr |= ((b << 8) | a) << 6;
             }
-            _ => {
-                return None;
+            OpMode::IAX => {
+                let a = self.a.as_u26()?;
+                instr |= a << 6;
             }
         }
+        let bytes = unsafe {
+            std::mem::transmute_copy(&instr)
+        };
         Some(bytes)
     }
 }
@@ -67,19 +60,35 @@ impl Operand {
         }
     }
 
-    pub fn get_u18(&self) -> Option<u32> {
-        if let Operand::U18(a) = self {
-            Some(*a)
-        } else {
-            None
-        }
-    }
-    
     pub fn as_u8(&self) -> Option<u8> {
         match self {
             Operand::Reg(a) => Some(*a),
             Operand::Const(a) => Some(*a),
             _ => None
+        }
+    }
+
+    pub fn as_u9(&self) -> Option<u32> {
+        match self {
+            Operand::Reg(a) => Some(*a as u32),
+            Operand::Const(a) => Some(0x100 + *a as u32),
+            _ => None
+        }
+    }
+
+    pub fn as_u18(&self) -> Option<u32> {
+        match self {
+            Operand::U18(a) => Some(*a),
+            Operand::S18(a) => Some(*a as u32),
+            _ => None
+        }
+    }
+
+    pub fn as_u26(&self) -> Option<u32> {
+        if let Operand::U26(a) = self {
+            Some(*a)
+        } else {
+            None
         }
     }
 
@@ -217,7 +226,7 @@ pub fn bytes_to_u32(bytes: &[u8]) -> u32 {
 pub fn take_instr(bytes: &[u8]) -> Option<Instruction> {
     let instr = bytes_to_u32(bytes);
     let op = Op::from_u8(instr as u8 & 0x3f)?;
-    let mut a = Operand::None;
+    let a;
     let mut b = Operand::None;
     let mut c = Operand::None;
     let mode = op.get_mode();
