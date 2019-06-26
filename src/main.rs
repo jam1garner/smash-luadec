@@ -5,5 +5,5 @@ mod lc;
 
 fn main() {
     let file = include_bytes!("/home/jam/Downloads/game_modded.lc");
-    println!("{:?}", lc::parser::take_lc_file(file));
+    println!("{:#?}", lc::parser::take_lc_file(file));
 }

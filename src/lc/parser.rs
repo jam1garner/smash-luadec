@@ -4,7 +4,7 @@ use nom::{
     Err,
     error::{ParseError, ErrorKind},
     multi::{length_data, count},
-    bytes::complete::{tag, take, take_while1},
+    bytes::complete::{tag, take},
     number::complete::{le_u8, le_u32, le_f32, le_u64},
     sequence::tuple,
     branch::alt,
@@ -155,8 +155,13 @@ fn take_lv_float(input: &[u8]) -> IResult<&[u8], LuaValue> {
     Ok((input, LuaValue::Float(float)))
 }
 
+fn le_u8_minus_one(input: &[u8]) -> IResult<&[u8], u8> {
+    let (input, out) = le_u8(input)?;
+    Ok((input, out - 1))
+}
+
 fn take_lv_str(input: &[u8]) -> IResult<&[u8], LuaValue> {
-    let (input, (_, data)) = tuple((tag(b"\x04"), length_data(le_u8)))(input)?;
+    let (input, (_, data)) = tuple((tag(b"\x04"), length_data(le_u8_minus_one)))(input)?;
 
     Ok((input, LuaValue::Str(
         String::from(std::str::from_utf8(data).unwrap())
