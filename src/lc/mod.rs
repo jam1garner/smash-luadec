@@ -31,6 +31,19 @@ pub enum LuaValue {
     U64(u64),
 }
 
+impl std::fmt::Display for LuaValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+        match self {
+            LuaValue::Nil => write!(f, "Nil"),
+            LuaValue::Bool(a) => write!(f, "[bool={}]", a),
+            LuaValue::Float(a) => write!(f, "[float={}]", a),
+            LuaValue::Str(a) => write!(f, "[str=\"{}\"]", a),
+            LuaValue::U64(a) => write!(f, "[u64=0x{:X}]", a),
+        }
+    }
+}
+
+
 impl LcFunc {
     pub fn disassemble(&self) -> String {
         let mut output = String::new();
@@ -42,6 +55,16 @@ impl LcFunc {
         for (i, instr) in self.code.iter().enumerate() {
             output.push_str(&format!("[{}] ", i));
             output.push_str(&format!("{}\n", instr.to_string()));
+        }
+        for upval in self.upvals.iter() {
+            output.push_str(&format!("u{} = [onstack={}]\n", upval.id, upval.on_stack));
+        }
+        for (i, cnst) in self.constants.iter().enumerate() {
+            output.push_str(&format!("k{} = {}\n", i, cnst));
+        }
+        for (i, func) in self.funcs.iter().enumerate() {
+            output.push_str(&format!("\n[func CLOSURE_{}]\n", i));
+            output.push_str(&func.disassemble());
         }
         output
     }
