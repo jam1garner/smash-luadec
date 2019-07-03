@@ -31,6 +31,20 @@ impl Instruction {
         };
         Some(bytes)
     }
+
+    pub fn to_string(&self) -> String {
+        match self.op.get_mode() {
+            OpMode::IABC => {
+                format!("{} {} {} {}", self.op, self.a, self.b, self.c)
+            }
+            OpMode::IABX | OpMode::IASBX => {
+                format!("{} {} {}", self.op, self.a, self.b)
+            }
+            OpMode::IAX => {
+                format!("{} {}", self.op, self.a)
+            }
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -49,6 +63,19 @@ pub enum Operand {
     U18(u32),
     S18(i32),
     U26(u32)
+}
+
+impl std::fmt::Display for Operand {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+        match self {
+            Operand::Reg(a) => write!(f, "R{}", a),
+            Operand::Const(a) => write!(f, "K{}", a),
+            Operand::U18(a) => write!(f, "{}", a),
+            Operand::S18(a) => write!(f, "{}", a),
+            Operand::U26(a) => write!(f, "{}", a),
+            Operand::None => { Ok(()) }
+        }
+    }
 }
 
 impl Operand {
@@ -151,6 +178,12 @@ pub enum Op {
   CLOSURE,
   VARARG,
   EXTRAARG
+}
+
+impl std::fmt::Display for Op {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", &format!("{:?}", self))
+    }
 }
 
 impl Op {

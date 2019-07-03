@@ -110,9 +110,19 @@ pub fn take_lc_func(input: &[u8]) -> IResult<&[u8], LcFunc> {
         count_values(le_u32, take_local_var_debug_info),
         count_values(le_u32, count_values(le_u8, le_u8))
     ))(input)?;
+
+    let src_name = if let Ok(s) = std::str::from_utf8(name_bytes) {
+        if s.len() > 1 {
+            Some(String::from(s))
+        } else {
+            None
+        }
+    } else {
+        None
+    };
     
     Ok((input, LcFunc {
-        src_name: None,
+        src_name,
         code,
         constants,
         upvals,
