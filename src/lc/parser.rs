@@ -40,8 +40,8 @@ pub fn take_instr(input: &[u8]) -> IResult<&[u8], Instruction> {
         OpMode::IASBX => {
             a = Operand::Reg((instr >> 6) as u8);
             // Extend sign bit 18 bit to 32 bit
-            let b_val = ((instr >> 14) & 0x1ffff) + (instr & 0x80000000);
-            b = Operand::S18(b_val as i32);
+            let b_val = ((instr >> 14) as i32) - 0x1ffff;
+            b = Operand::S18(b_val);
         }
         OpMode::IAX => {
             a = Operand::U26(instr >> 6);
