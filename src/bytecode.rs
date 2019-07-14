@@ -45,9 +45,66 @@ impl Instruction {
             }
         }
     }
+
+    pub fn to_string_with_consts(&self, func: &crate::lc::LcFunc) -> String {
+        match self.op.get_mode() {
+            OpMode::IABC => {
+                format!("{} {} {} {}", self.op, self.a,
+                    match self.b {
+                        Operand::Reg(rnum) => {
+                            match self.op {
+                                Op::LOADBOOL => {
+                                    format!("{}", rnum != 0)
+                                }
+                                _ => {
+                                    format!("R{}", rnum)
+                                }
+                            }
+                        },
+                        Operand::Const(knum) => {
+                            format!("{}", func.constants[knum as usize])
+                        },
+                        _ => {
+                            panic!("Invalid B arg");
+                        }
+                    },
+                    match self.c {
+                        Operand::Reg(rnum) => {
+                            format!("R{}", rnum)
+                        },
+                        Operand::Const(knum) => {
+                            format!("{}", func.constants[knum as usize])
+                        },
+                        _ => {
+                            panic!("Invalid B arg");
+                        }
+                    })
+            }
+            OpMode::IABX=> {
+                match self.op {
+                    Op::LOADK => {
+                        if let Operand::U18(knum) = self.b {
+                            format!("{} {} {}", self.op, self.a, func.constants[knum as usize])
+                        } else {
+                            panic!("Invalid LOADK arg b");
+                        }
+                    }
+                    _ => {
+                        format!("{} {} {}", self.op, self.a, self.b)
+                    }
+                }
+            }
+            OpMode::IASBX => {
+                format!("{} {} {}", self.op, self.a, self.b)
+            }
+            OpMode::IAX => {
+                format!("{} {}", self.op, self.a)
+            }
+        }
+    }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum OpMode {
     IABC, // 3 args (8, 9, and 9 bits respectively)
     IABX, // 2 args (8 and 18 bits respectively)
@@ -55,7 +112,7 @@ pub enum OpMode {
     IAX // 1 arg (26 bits)
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Operand {
     None,
     Reg(u8),
@@ -131,53 +188,53 @@ impl Operand {
 #[repr(u8)]
 #[derive(Copy, Clone, Debug)]
 pub enum Op {
-  MOVE,
-  LOADK,
-  LOADKX,
-  LOADBOOL,
-  LOADNIL,
-  GETUPVAL,
-  GETTABUP,
-  GETTABLE,
-  SETTABUP,
-  SETUPVAL,
-  SETTABLE,
-  NEWTABLE,
-  SELF,
-  ADD,
-  SUB,
-  MUL,
-  MOD,
-  POW,
-  DIV,
-  IDIV,
-  BAND,
-  BOR,
-  BXOR,
-  SHL,
-  SHR,
-  UNM,
-  BNOT,
-  NOT,
-  LEN,
-  CONCAT,
-  JMP,
-  EQ,
-  LT,
-  LE,
-  TEST,
-  TESTSET,
-  CALL,
-  TAILCALL,
-  RETURN,
-  FORLOOP,
-  FORPREP,
-  TFORCALL,
-  TFORLOOP,
-  SETLIST,
-  CLOSURE,
-  VARARG,
-  EXTRAARG
+    MOVE,
+    LOADK,
+    LOADKX,
+    LOADBOOL,
+    LOADNIL,
+    GETUPVAL,
+    GETTABUP,
+    GETTABLE,
+    SETTABUP,
+    SETUPVAL,
+    SETTABLE,
+    NEWTABLE,
+    SELF,
+    ADD,
+    SUB,
+    MUL,
+    MOD,
+    POW,
+    DIV,
+    IDIV,
+    BAND,
+    BOR,
+    BXOR,
+    SHL,
+    SHR,
+    UNM,
+    BNOT,
+    NOT,
+    LEN,
+    CONCAT,
+    JMP,
+    EQ,
+    LT,
+    LE,
+    TEST,
+    TESTSET,
+    CALL,
+    TAILCALL,
+    RETURN,
+    FORLOOP,
+    FORPREP,
+    TFORCALL,
+    TFORLOOP,
+    SETLIST,
+    CLOSURE,
+    VARARG,
+    EXTRAARG
 }
 
 impl std::fmt::Display for Op {

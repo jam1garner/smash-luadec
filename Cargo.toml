@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 byteorder = "1"
 nom = "5"
+itertools = "^0.8"

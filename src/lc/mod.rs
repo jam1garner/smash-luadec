@@ -54,7 +54,7 @@ impl LcFunc {
         }
         for (i, instr) in self.code.iter().enumerate() {
             output.push_str(&format!("[{}] ", i));
-            output.push_str(&format!("{}\n", instr.to_string()));
+            output.push_str(&format!("{}\n", instr.to_string_with_consts(self)));
         }
         for upval in self.upvals.iter() {
             output.push_str(&format!("u{} = [onstack={}]\n", upval.id, upval.on_stack));
