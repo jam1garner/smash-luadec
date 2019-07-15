@@ -34,7 +34,7 @@ pub enum LuaValue {
 impl std::fmt::Display for LuaValue {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
         match self {
-            LuaValue::Nil => write!(f, "Nil"),
+            LuaValue::Nil => write!(f, "nil"),
             LuaValue::Bool(a) => write!(f, "[bool={}]", a),
             LuaValue::Float(a) => write!(f, "[float={}]", a),
             LuaValue::Str(a) => write!(f, "[str=\"{}\"]", a),
@@ -52,12 +52,16 @@ impl LcFunc {
             output.push_str(&src_name);
             output.push_str("\"\n");
         }
+        for (i, upval) in self.upvals.iter().enumerate() {
+            output.push_str(&format!("u{} = {}{}\n", i, if upval.on_stack {
+                "r"
+            } else {
+                "u"
+            }, upval.id));
+        }
         for (i, instr) in self.code.iter().enumerate() {
             output.push_str(&format!("[{}] ", i));
             output.push_str(&format!("{}\n", instr.to_string_with_consts(self)));
-        }
-        for upval in self.upvals.iter() {
-            output.push_str(&format!("u{} = [onstack={}]\n", upval.id, upval.on_stack));
         }
         for (i, cnst) in self.constants.iter().enumerate() {
             output.push_str(&format!("k{} = {}\n", i, cnst));
