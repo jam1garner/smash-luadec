@@ -2740,6 +2740,7 @@ u2 = r5
 [5] GETTABUP R4 R0 [str="BUTTON_ID_FK_BUTTON_X"]
 [6] EQ R0 R0 R4
 [7] JMP R0 22
+; start of second level if
 [8] LT R0 [float=0] R2
 [9] JMP R0 166
 [10] LT R0 [float=0] R1
@@ -2762,152 +2763,155 @@ u2 = r5
 [27] JMP R0 148
 [28] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
 [29] JMP R0 146
+; start of second level else
 [30] GETTABUP R4 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
 [31] EQ R1 R0 R4
 [32] JMP R0 3
 [33] GETTABUP R4 R0 [str="BUTTON_ID_FK_BUTTON_A"]
 [34] EQ R0 R0 R4
 [35] JMP R0 8
-[36] LT R0 [float=0] R2
-[37] JMP R0 2
-[38] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_B"]
-[39] JMP R0 136
-[40] LT R0 R2 [float=0]
-[41] JMP R0 134
-[42] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_X"]
-[43] JMP R0 132
+    [36] LT R0 [float=0] R2
+    [37] JMP R0 2
+    [38] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_B"]
+    [39] JMP R0 136
+    [40] LT R0 R2 [float=0]
+    [41] JMP R0 134
+    [42] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_X"]
+    [43] JMP R0 132
 [44] GETTABUP R4 R0 [str="BUTTON_ID_FK_BUTTON_B"]
 [45] EQ R0 R0 R4
 [46] JMP R0 26
-[47] LT R0 R2 [float=0]
-[48] JMP R0 20
-[49] LT R0 [float=0] R1
-[50] JMP R0 2
-[51] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_A"]
-[52] JMP R0 123
-[53] LT R0 R1 [float=0]
-[54] JMP R0 2
-[55] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
-[56] JMP R0 119
-[57] GETUPVAL R4 R1 R0
-[58] GETTABUP R5 R0 [str="BUTTON_ID_FK_BUTTON_A"]
-[59] EQ R1 R4 R5
-[60] JMP R0 4
-[61] GETUPVAL R4 R1 R0
-[62] GETTABUP R5 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
-[63] EQ R0 R4 R5
-[64] JMP R0 2
-[65] GETUPVAL R3 R1 R0
-[66] JMP R0 109
-[67] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
-[68] JMP R0 107
-[69] LT R0 R1 [float=0]
-[70] JMP R0 105
-[71] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
+    [47] LT R0 R2 [float=0]
+    [48] JMP R0 20
+        [49] LT R0 [float=0] R1
+        [50] JMP R0 2
+            [51] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_A"]
+        [52] JMP R0 123
+            [53] LT R0 R1 [float=0]
+            [54] JMP R0 2
+                [55] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
+            [56] JMP R0 119
+                [57] GETUPVAL R4 R1 R0
+                [58] GETTABUP R5 R0 [str="BUTTON_ID_FK_BUTTON_A"]
+                [59] EQ R1 R4 R5
+                [60] JMP R0 4
+                [61] GETUPVAL R4 R1 R0
+                [62] GETTABUP R5 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
+                [63] EQ R0 R4 R5
+                [64] JMP R0 2
+                    [65] GETUPVAL R3 R1 R0
+                [66] JMP R0 109
+                    [67] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
+    [68] JMP R0 107
+        [69] LT R0 R1 [float=0]
+        [70] JMP R0 105
+            [71] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
 [72] JMP R0 103
-[73] GETTABUP R4 R0 [str="BUTTON_ID_FK_STICK_R"]
-[74] EQ R0 R0 R4
-[75] JMP R0 19
-[76] LT R0 R2 [float=0]
-[77] JMP R0 2
-[78] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
-[79] JMP R0 96
-[80] LT R0 [float=0] R2
-[81] JMP R0 5
-[82] GETUPVAL R4 R2 R0
-[83] TEST R4 R0 R0
-[84] JMP R0 91
-[85] GETTABUP R3 R0 [str="BUTTON_ID_TEST"]
-[86] JMP R0 89
-[87] LT R0 [float=0] R1
-[88] JMP R0 2
-[89] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_B"]
-[90] JMP R0 85
-[91] LT R0 R1 [float=0]
-[92] JMP R0 83
-[93] GETTABUP R3 R0 [str="BUTTON_ID_FK_DOWN"]
-[94] JMP R0 81
-[95] GETTABUP R4 R0 [str="BUTTON_ID_FK_DOWN"]
-[96] EQ R0 R0 R4
-[97] JMP R0 4
-[98] LT R0 [float=0] R1
-[99] JMP R0 76
-[100] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
-[101] JMP R0 74
-[102] GETTABUP R4 R0 [str="BUTTON_ID_TEST"]
-[103] EQ R0 R0 R4
-[104] JMP R0 71
-[105] LT R0 R2 [float=0]
-[106] JMP R0 69
-[107] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
+    [73] GETTABUP R4 R0 [str="BUTTON_ID_FK_STICK_R"]
+    [74] EQ R0 R0 R4
+    [75] JMP R0 19
+        [76] LT R0 R2 [float=0]
+        [77] JMP R0 2
+            [78] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_Y"]
+        [79] JMP R0 96
+            [80] LT R0 [float=0] R2
+            [81] JMP R0 5
+                [82] GETUPVAL R4 R2 R0
+                [83] TEST R4 R0 R0
+                [84] JMP R0 91
+                    [85] GETTABUP R3 R0 [str="BUTTON_ID_TEST"]
+            [86] JMP R0 89
+                [87] LT R0 [float=0] R1
+                [88] JMP R0 2
+                    [89] GETTABUP R3 R0 [str="BUTTON_ID_FK_BUTTON_B"]
+                [90] JMP R0 85
+                    [91] LT R0 R1 [float=0]
+                    [92] JMP R0 83
+                        [93] GETTABUP R3 R0 [str="BUTTON_ID_FK_DOWN"]
+    [94] JMP R0 81
+        [95] GETTABUP R4 R0 [str="BUTTON_ID_FK_DOWN"]
+        [96] EQ R0 R0 R4
+        [97] JMP R0 4
+            [98] LT R0 [float=0] R1
+            [99] JMP R0 76
+                [100] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
+        [101] JMP R0 74
+            [102] GETTABUP R4 R0 [str="BUTTON_ID_TEST"]
+            [103] EQ R0 R0 R4
+            [104] JMP R0 71
+            [105] LT R0 R2 [float=0]
+            [106] JMP R0 69
+                [107] GETTABUP R3 R0 [str="BUTTON_ID_FK_STICK_R"]
 [108] JMP R0 67
-[109] GETTABUP R4 R0 [str="CONTROLLER_TYPE"]
-[110] GETTABUP R5 R0 [str="CONTROLLER_JOY_CON"]
-[111] EQ R0 R4 R5
-[112] JMP R0 63
-[113] GETTABUP R4 R0 [str="BUTTON_ID_JC_UP"]
-[114] EQ R0 R0 R4
-[115] JMP R0 22
-[116] LT R0 [float=0] R1
-[117] JMP R0 2
-[118] GETTABUP R3 R0 [str="BUTTON_ID_JC_RIGHT"]
-[119] JMP R0 56
-[120] LT R0 R1 [float=0]
-[121] JMP R0 2
-[122] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
-[123] JMP R0 52
-[124] LT R0 [float=0] R2
-[125] JMP R0 50
-[126] GETUPVAL R4 R1 R0
-[127] GETTABUP R5 R0 [str="BUTTON_ID_JC_RIGHT"]
-[128] EQ R1 R4 R5
-[129] JMP R0 4
-[130] GETUPVAL R4 R1 R0
-[131] GETTABUP R5 R0 [str="BUTTON_ID_JC_LEFT"]
-[132] EQ R0 R4 R5
-[133] JMP R0 2
-[134] GETUPVAL R3 R1 R0
-[135] JMP R0 40
-[136] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
-[137] JMP R0 38
-[138] GETTABUP R4 R0 [str="BUTTON_ID_JC_RIGHT"]
-[139] EQ R1 R0 R4
-[140] JMP R0 3
-[141] GETTABUP R4 R0 [str="BUTTON_ID_JC_LEFT"]
-[142] EQ R0 R0 R4
-[143] JMP R0 8
-[144] LT R0 [float=0] R2
-[145] JMP R0 2
-[146] GETTABUP R3 R0 [str="BUTTON_ID_JC_DOWN"]
-[147] JMP R0 28
-[148] LT R0 R2 [float=0]
-[149] JMP R0 26
-[150] GETTABUP R3 R0 [str="BUTTON_ID_JC_UP"]
-[151] JMP R0 24
-[152] GETTABUP R4 R0 [str="BUTTON_ID_JC_DOWN"]
-[153] EQ R0 R0 R4
-[154] JMP R0 21
-[155] LT R0 [float=0] R1
-[156] JMP R0 2
-[157] GETTABUP R3 R0 [str="BUTTON_ID_JC_RIGHT"]
-[158] JMP R0 17
-[159] LT R0 R1 [float=0]
-[160] JMP R0 2
-[161] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
-[162] JMP R0 13
-[163] LT R0 R2 [float=0]
-[164] JMP R0 11
-[165] GETUPVAL R4 R1 R0
-[166] GETTABUP R5 R0 [str="BUTTON_ID_JC_RIGHT"]
-[167] EQ R1 R4 R5
-[168] JMP R0 4
-[169] GETUPVAL R4 R1 R0
-[170] GETTABUP R5 R0 [str="BUTTON_ID_JC_LEFT"]
-[171] EQ R0 R4 R5
-[172] JMP R0 2
-[173] GETUPVAL R3 R1 R0
-[174] JMP R0 1
-[175] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
+    ; start of top level else
+    [109] GETTABUP R4 R0 [str="CONTROLLER_TYPE"]
+    [110] GETTABUP R5 R0 [str="CONTROLLER_JOY_CON"]
+    [111] EQ R0 R4 R5
+    [112] JMP R0 63
+    [113] GETTABUP R4 R0 [str="BUTTON_ID_JC_UP"]
+    [114] EQ R0 R0 R4
+    [115] JMP R0 22
+    [116] LT R0 [float=0] R1
+    [117] JMP R0 2
+    [118] GETTABUP R3 R0 [str="BUTTON_ID_JC_RIGHT"]
+    [119] JMP R0 56
+    [120] LT R0 R1 [float=0]
+    [121] JMP R0 2
+    [122] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
+    [123] JMP R0 52
+    [124] LT R0 [float=0] R2
+    [125] JMP R0 50
+    [126] GETUPVAL R4 R1 R0
+    [127] GETTABUP R5 R0 [str="BUTTON_ID_JC_RIGHT"]
+    [128] EQ R1 R4 R5
+    [129] JMP R0 4
+    [130] GETUPVAL R4 R1 R0
+    [131] GETTABUP R5 R0 [str="BUTTON_ID_JC_LEFT"]
+    [132] EQ R0 R4 R5
+    [133] JMP R0 2
+    [134] GETUPVAL R3 R1 R0
+    [135] JMP R0 40
+    [136] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
+    [137] JMP R0 38
+    [138] GETTABUP R4 R0 [str="BUTTON_ID_JC_RIGHT"]
+    [139] EQ R1 R0 R4
+    [140] JMP R0 3
+    [141] GETTABUP R4 R0 [str="BUTTON_ID_JC_LEFT"]
+    [142] EQ R0 R0 R4
+    [143] JMP R0 8
+    [144] LT R0 [float=0] R2
+    [145] JMP R0 2
+    [146] GETTABUP R3 R0 [str="BUTTON_ID_JC_DOWN"]
+    [147] JMP R0 28
+    [148] LT R0 R2 [float=0]
+    [149] JMP R0 26
+    [150] GETTABUP R3 R0 [str="BUTTON_ID_JC_UP"]
+    [151] JMP R0 24
+    [152] GETTABUP R4 R0 [str="BUTTON_ID_JC_DOWN"]
+    [153] EQ R0 R0 R4
+    [154] JMP R0 21
+    [155] LT R0 [float=0] R1
+    [156] JMP R0 2
+    [157] GETTABUP R3 R0 [str="BUTTON_ID_JC_RIGHT"]
+    [158] JMP R0 17
+    [159] LT R0 R1 [float=0]
+    [160] JMP R0 2
+    [161] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
+    [162] JMP R0 13
+    [163] LT R0 R2 [float=0]
+    [164] JMP R0 11
+    [165] GETUPVAL R4 R1 R0
+    [166] GETTABUP R5 R0 [str="BUTTON_ID_JC_RIGHT"]
+    [167] EQ R1 R4 R5
+    [168] JMP R0 4
+    [169] GETUPVAL R4 R1 R0
+    [170] GETTABUP R5 R0 [str="BUTTON_ID_JC_LEFT"]
+    [171] EQ R0 R4 R5
+    [172] JMP R0 2
+    [173] GETUPVAL R3 R1 R0
+    [174] JMP R0 1
+    [175] GETTABUP R3 R0 [str="BUTTON_ID_JC_LEFT"]
+; end of top level if/else
 [176] GETTABUP R4 R0 [str="BUTTON_ID_SAVE"]
 [177] EQ R0 R0 R4
 [178] JMP R0 7

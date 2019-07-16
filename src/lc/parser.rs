@@ -171,7 +171,7 @@ fn le_u8_minus_one(input: &[u8]) -> IResult<&[u8], u8> {
 }
 
 fn take_lv_str(input: &[u8]) -> IResult<&[u8], LuaValue> {
-    let (input, (_, data)) = tuple((tag(b"\x04"), length_data(le_u8_minus_one)))(input)?;
+    let (input, (_, data)) = tuple((alt((tag(b"\x04"), tag("\x14"))), length_data(le_u8_minus_one)))(input)?;
 
     Ok((input, LuaValue::Str(
         String::from(std::str::from_utf8(data).unwrap())

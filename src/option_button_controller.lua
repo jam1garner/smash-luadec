@@ -51,13 +51,13 @@ function main() -- 17
         unk1:set_enable(true)
         repeat 
             local unk_17_0 = UiScriptPlayer.invoke("is_default_settings", CONTROLLER_TYPE)
-            unk22(!unk_17_0)
+            unk22(not unk_17_0)
             local unk_17_1
             button_is_edited = false
             updated_button_id = BUTTON_ID_NONE
             unk_17_0 = UiScriptPlayer.invoke("is_default_settings", CONTROLLER_TYPE)
             if (not unk1:is_enable() and not unk_17_0) or (unk1:is_enable() and unk_17_0) then
-                unk22(!unk_17_0)
+                unk22(not unk_17_0)
             end
             if unk3:get_decided_button_id() == BUTTON_ID_RESET then
                 AppPopupManager.open_database_args(
@@ -66,7 +66,7 @@ function main() -- 17
                     "s"
                 )
                 repeat
-                    if !AppPopupManager.is_busy() then
+                    if not AppPopupManager.is_busy() then
                         if AppPopupManager.get_result() == POPUP_RESULT_YES then
                             unk15(CONTROLLER_TYPE)
                         end
@@ -159,6 +159,63 @@ function main() -- 17
     end
 end
 
-function select_button_func() -- 18
-    pass
+function select_button_func(unk_18_0, unk_18_1, unk_18_2) -- 18
+    local unk_18_3 = unk_18_0
+    if CONTROLLER_TYPE == CONTROLLER_FULL_KEY then
+        if unk_18_0 == BUTTON_ID_FK_BUTTON_X then
+            if 0.0 < unk_18_2 then
+                if 0.0 < unk_18_1 then
+                    unk_18_3 = BUTTON_ID_FK_BUTTON_A
+                elseif unk_18_1 < 0.0 then
+                    unk_18_3 = BUTTON_ID_FK_BUTTON_Y
+                elseif unk23 == BUTTON_ID_FK_BUTTON_A or unk23 == BUTTON_ID_FK_BUTTON_Y then
+                    unk_18_3 = unk23
+                else
+                    unk_18_3 = BUTTON_ID_FK_BUTTON_Y
+                end
+            end
+        else
+            if unk_18_0 == BUTTON_ID_FK_BUTTON_Y or unk_18_0 == BUTTON_ID_FK_BUTTON_A then
+                if 0.0 < unk_18_2 then
+                    unk_18_3 = BUTTON_ID_FK_BUTTON_B
+                elseif unk_18_2 < 0.0 then
+                    unk_18_3 = BUTTON_ID_FK_BUTTON_X
+                end
+            elseif unk_18_0 == BUTTON_ID_FK_BUTTON_B then
+                if unk_18_2 < 0.0 then
+                    if unk_18_1 < 0.0 then
+                        unk_18_3 = BUTTON_ID_FK_BUTTON_Y
+                    elseif unk23 == BUTTON_ID_FK_BUTTON_A or unk23 == BUTTON_ID_FK_BUTTON_Y then
+                        unk_18_3 = unk23
+                    else
+                        unk_18_3 = BUTTON_ID_FK_BUTTON_Y
+                    end
+                elseif unk_18_1 < 0.0 then
+                    unk_18_3 = BUTTON_ID_FK_STICK_R
+                end
+            else
+                if unk_18_0 == BUTTON_ID_FK_STICK_R then
+                    if unk_18_2 < 0.0 then
+                        unk_18_3 = BUTTON_ID_FK_BUTTON_Y
+                    elseif 0.0 < unk_18_2 then
+                        if unk23 then
+                            unk_18_3 = BUTTON_ID_TEST
+                        end
+                    elseif 0.0 < unk_18_1 then
+                        unk_18_3 = BUTTON_ID_FK_BUTTON_B
+                    elseif unk_18_1 < 0.0 then
+                        unk_18_3 = BUTTON_ID_FK_DOWN
+                    end
+                elseif unk_18_0 == BUTTON_ID_FK_DOWN then
+                    if 0.0 < unk_18_1 then
+                        unk_18_3 = BUTTON_ID_FK_STICK_R
+                    end
+                elseif unk_18_0 == BUTTON_ID_TEST and unk_18_2 < 0.0 then
+                    unk_18_3 = BUTTON_ID_FK_STICK_R
+                end
+            end
+        end
+    else
+        pass
+    end
 end
